@@ -1,3 +1,0 @@
-1.traversal
-->mirror tree(postorder traversal)
-->mirror and diameter (postorder traversal)
