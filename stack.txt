@@ -1,0 +1,1114 @@
+Basic operation
+#include<bits/stdc++.h>
+usingnamespacestd;
+structnode
+{
+    int data;
+    structnode*next;
+};
+structnode*top=NULL;
+structnode*push(structnode*top,intval)
+{
+    structnode*ptr;
+    ptr=(structnode*)malloc(sizeof(struct node));
+    ptr->data=val;
+    if(top==NULL)
+    {
+        ptr->next=NULL;
+        top=ptr;
+    }
+    else
+    {
+        ptr->next=top;
+        top=ptr;
+    }
+    return top;
+}
+structnode*display(structnode*top)
+{
+    structnode*ptr;
+    ptr=top;
+    if(top==NULL)
+    {
+        cout<<"stack is empty"<<endl;
+    }
+    else{
+    while(ptr!=NULL)
+    {
+        cout<<ptr->data<<endl;
+        ptr=ptr->next;
+    }
+    }
+    return top;
+}
+structnode*pop(structnode*top)
+{
+    structnode*ptr;
+    ptr=top;
+    if(top==NULL)
+    {
+        cout<<"stack is empty"<<endl;
+    }
+    else
+    {
+        top=top->next;
+        cout<<"value to be deleted is "<<ptr->data<<endl;
+    }  
+    return top;  
+}
+
+void*peek(structnode*top)
+{
+    if(top==NULL)
+    {
+        cout<<"stack is empty"<<endl;
+    }
+    else{
+        cout<<"top value is "<<top->data<<endl;
+    }
+}
+intmain()
+{
+    int option,val;
+    do
+    {
+    cout<<"1 to push, 2 to display, 3 to pop, 4 to peek and 5 to exit"<<endl;
+    cin>>option;
+    switch(option)
+    {
+        case1:
+            cout<<"Enter a value"<<endl;
+            cin>>val;
+            top=push(top,val);
+            break;
+        case2:
+            top=display(top);
+            break;
+        case3:
+            top=pop(top);
+            break;
+        case4:
+            peek(top);
+            break;
+    }
+    }while(option !=5);
+    return0;
+}
+
+INFIX TO POSTFIX
+#include<bits/stdc++.h>
+usingnamespacestd;
+intprec(charc)
+{
+    if(c=='^')
+    return5;
+    elseif(c=='/'||c=='*'||c=='%')
+    return4;
+    elseif(c=='+'||c=='-')
+    return3;
+    else
+    return2;
+}
+voidintopo(strings)
+{
+    int i;
+    string result;
+    stack<char> st;
+    for(i=0;i<s.length();i++)
+    {
+        char c=s[i];
+        if((c >='a'&& c <='z')||(c >='A'&& c <='Z')||(c >='0'&& c <='9'))
+        {
+            result +=c;
+        }
+        elseif(c=='(')
+        {
+            st.push('(');
+        }
+        elseif(c==')')
+        {
+            while(st.top()!='(')
+            {
+                result +=st.top();
+                st.pop();
+            }
+            st.pop();
+        }
+        else
+        {
+            if(!st.empty()&&prec(s[i])<=prec(st.top()))
+            {
+                result +=st.top();
+                st.pop();
+            }
+            st.push(s[i]);
+        }   
+    }
+    while(!st.empty())
+    {
+        result +=st.top();
+        st.pop();
+    }
+    cout<<result;
+}
+intmain()
+{
+    string sl;
+    sl="a+b*(c^d-e)^(f+g*h)-i";
+    intopo(sl);
+    return0;
+}
+INFIX TO PREFIX
+#include<bits/stdc++.h>
+usingnamespacestd;
+intpre(charch)
+{
+    if(ch=='+'|| ch=='-')
+    {
+        return1;
+    }
+    elseif(ch=='/'|| ch=='*')
+    {
+        return2;
+    }
+    elseif(ch=='^'|| ch=='%')
+    {
+        return3;
+    }
+    else
+    {
+        return0;
+    }
+}
+stringinfix_to_postfix(stringinfix)
+{
+    infix='('+infix+')';
+    int i;
+    stack<char> st;
+    char ch;
+    string output;
+    for(i=0;i<infix.length();i++)
+    {
+        ch=infix[i];
+        if(isalpha(ch)||isdigit(ch))
+        {
+            output +=ch;
+        }
+        elseif(ch=='^'&&prec(ch)<=)
+    }
+}
+
+NEXT GREATER RIGHT
+#include<bits/stdc++.h>
+usingnamespacestd;
+intmain()
+{
+    stack<int> st;
+    int n,i;
+    cout<<"enter total values"<<endl;
+    cin>>n;
+    int ar[n],output[n];
+    memset(output,n,0);
+    cout<<"enter the values"<<endl;
+    for( i =0; i < n; i++)
+    {
+        cin>>ar[i];
+    }
+    for(i=n-1;i>=0;i--)
+    {
+        if(st.empty())
+        {
+            output[i]=-1;
+            st.push(ar[i]);
+        }
+        elseif(!st.empty()&& st.top()>ar[i])
+        {
+            output[i]=st.top();
+            st.push(ar[i]);
+        }
+        elseif(!st.empty()&& st.top()<=ar[i])
+        {
+            while(!st.empty()&& st.top()<=ar[i])
+            {
+                st.pop();
+            }
+            if(st.empty())
+            {
+                output[i]=-1;
+            }
+            else
+            {
+                output[i]=st.top();
+            }
+            st.push(ar[i]);
+        }
+    }
+    for( i =0; i < n; i++)
+    {
+        cout<<output[i]<<'\t';
+    }
+    return0;
+}
+
+NEXT SMALLER RIGHT
+#include<bits/stdc++.h>
+usingnamespacestd;
+intmain()
+{
+    stack<int> st;
+    int n,i;
+    cout<<"enter no. of elements"<<endl;
+    cin>>n;
+    int ar[n],out[n];
+    memset(out,n,0);
+    cout<<"enter the values"<<endl;
+    for(i=0;i<n;i++)
+    {
+        cin>>ar[i];
+    }
+    for( i = n-1; i >=0; i--)
+    {
+        if(st.empty())
+        {
+            st.push(ar[i]);
+            out[i]=-1;
+        }
+        elseif(!st.empty()&&st.top()<ar[i])
+        {
+            out[i]=st.top();
+            st.push(ar[i]);
+        }
+        elseif(!st.empty()&&st.top()>=ar[i])
+        {
+            while(!st.empty()&&st.top()>=ar[i])
+            {
+                st.pop();
+            }
+            if(st.empty())
+            {
+                
+                out[i]=-1;
+            }
+            else
+            {
+                out[i]=st.top();
+            }
+            st.push(ar[i]);
+        }
+    }
+    for( i =0; i < n; i++)
+    {
+        cout<<out[i]<<'\t';
+    }
+    return0;
+    
+}
+
+NEXT GREATER LEFT
+#include<bits/stdc++.h>
+usingnamespacestd;
+intmain()
+{
+    stack<int> st;
+    int n,i;
+    cout<<"enter total values"<<endl;
+    cin>>n;
+    int ar[n],out[n];
+    for(i=0;i<n;i++)
+    {
+        cin>>ar[i];
+    }
+    memset(out,n,0);
+    for(i=0;i<n;i++)
+    {
+        if(st.empty())
+        {
+            out[i]=-1;
+            st.push(ar[i]);
+        }
+        elseif(!st.empty()&&st.top()>ar[i])
+        {
+            out[i]=st.top();
+            st.push(ar[i]);
+        }
+        elseif(!st.empty()&&st.top()<=ar[i])
+        {
+            while(!st.empty()&&st.top()<=ar[i])
+            {
+                st.pop();
+            }
+            if(st.empty())
+            {
+                out[i]=-1;
+            }
+            else
+            {
+                out[i]=st.top();
+            }
+            st.push(ar[i]);
+        }
+    }
+    for( i =0; i < n; i++)
+    {
+        cout<<out[i]<<'\t';
+    }
+    return0;
+}
+
+
+NEXT SMALLER LEFT
+#include<bits/stdc++.h>
+usingnamespacestd;
+intmain()
+{
+
+    stack<int> st;
+    int n,i;
+    cout<<"enter total values"<<endl;
+    cin>>n;
+    int out[n],ar[n];
+    memset(out,n,0);
+    cout<<"enter the values"<<endl;
+    for( i =0; i < n; i++)
+    {
+        cin>>ar[i];
+    }
+    for( i =0; i < n; i++)
+    {
+        if(st.empty())
+        {
+            out[i]=-1;
+            st.push(ar[i]);
+        }
+        elseif(!st.empty()&& st.top()< ar[i])
+        {
+            out[i]=st.top();
+            st.push(ar[i]);
+        }
+        elseif(!st.empty()&& st.top()>= ar[i])
+        {
+            while(!st.empty()&& st.top()>= ar[i])
+            {
+                st.pop();
+            }
+            if(st.empty())
+            {
+                out[i]=-1;
+            }
+            else
+            {
+                out[i]=st.top();
+            }
+            st.push(ar[i]);
+        }
+    }
+    for( i =0; i < n; i++)
+    {
+        cout<<out[i]<<'\t';
+    }
+    return0;
+    
+}
+
+STOCK SPAN
+#include<bits/stdc++.h>
+usingnamespacestd;
+intmain()
+{
+    stack<int> st,index;
+    int n,i;
+    cout<<"enter no. of inputs"<<endl;
+    cin>>n;
+    int out[n],ar[n];
+    //memset(out,n,0);
+    for(i =0; i < n; i++)
+    {
+        cin>>ar[i];
+    }
+    
+    for(i=0;i<n;i++)
+    {
+        if(st.empty())
+        {
+            st.push(ar[i]);
+            out[i]=1;
+            index.push(i);
+        }
+        elseif(!st.empty()&&st.top()>ar[i])
+        {
+            out[i]=i-index.top();
+            st.push(ar[i]);
+            index.push(i);
+        }
+        elseif(!st.empty()&&st.top()<=ar[i])
+        {
+            while(!st.empty()&&st.top()<=ar[i])
+            {
+                st.pop();
+                index.pop();
+            }
+            if(st.empty())
+            {
+                out[i]=1;
+            }
+            else
+            {
+                out[i]=i-index.top();
+            }
+            st.push(ar[i]);
+            index.push(i);
+        }
+        //cout<<"pos is "<<pos<<endl;
+    }
+    for( i =0; i < n; i++)
+    {
+        cout<<out[i]<<'\t';
+    }
+    return0;
+    
+}
+
+CHECK BALANCED PARANTHESIS
+#include<bits/stdc++.h>
+usingnamespacestd;
+intmain()
+{
+    stack<int> st;
+    int i,n,check=1;
+    string str;
+    cin>>str;
+    n=str.length();
+    for(i=0;i<n;i++)
+    {
+        if(str[i]=='{'||str[i]=='('||str[i]=='[')
+        {
+            st.push(str[i]);
+        }
+        elseif(str[i]=='}')
+        {
+            if(st.top()=='{')
+            {
+                st.pop();
+            }
+            else
+            {
+                check =0;
+            }    
+        }
+        elseif(str[i]==')')
+        {
+            if(st.top()=='(')
+            {
+                st.pop();
+            }
+            else
+            {
+                check =0;
+            }    
+        }
+        elseif(str[i]==']')
+        {
+            if(st.top()=='[')
+            {
+                st.pop();
+            }
+            else
+            {
+                check=0;
+            }    
+        }
+        elseif(st.empty())
+        {
+            check=0;
+        }
+    }
+    if(check==1)
+    {
+        cout<<"balanced";
+    }
+    else
+    {
+        cout<<"not balanced";
+    }
+    
+    return0;
+}
+
+LARGEST AREA RECTANGLE IN HISTOGRAM
+#include<bits/stdc++.h>
+usingnamespacestd;
+intmain()
+{
+    stack<int> st1,st2,index_left,index_right;
+    int n,i;
+    cout<<"enter no. of inputs"<<endl;
+    cin>>n;
+    int ar[n],out_left[n],out_right[n];
+    for(i=0;i<n;i++)
+    {
+        cin>>ar[i];
+    }
+    for(i=0;i<n;i++)
+    {
+        if(st1.empty())
+        {
+            st1.push(ar[i]);
+            index_left.push(i);
+            out_left[i]=index_left.top();
+        }
+        elseif(!st1.empty()&&st1.top()<ar[i])
+        {
+            st1.push(ar[i]);
+            out_left[i]=index_left.top();
+            index_left.push(i);
+            
+        }
+        elseif(!st1.empty()&&st1.top()>=ar[i])
+        {
+            while(!st1.empty()&&st1.top()>=ar[i])
+                {
+                    st1.pop();
+                    index_left.pop();
+                }    
+            if(st1.empty())
+            {
+                index_left.push(i);
+                out_left[i]=index_left.top();
+            }
+            else
+            {
+                out_left[i]=index_left.top();
+                index_left.push(i);
+            }    
+        }
+    }
+    for( i =0; i < n; i++)
+    {
+        cout<<out_left[i]<<'\t';
+    }
+    return0;
+}
+
+RAIN WATER TAPPING
+#include<bits/stdc++.h>
+usingnamespacestd;
+intmain()
+{
+    int n,val,sum=0;
+    cout<<"enter no. of inputs"<<endl;
+    cin>>n;
+    int ar[n],i,left[n],right[n];
+    cout<<"enter the values"<<endl;
+    for(i=0;i<n;i++)
+    {
+        cin>>ar[i];
+        if(i==0)
+        {
+            left[i]=ar[i];
+        }
+        else
+        {
+            if(left[i-1]<ar[i])
+            {
+                left[i]=ar[i];
+            }
+            else
+            {
+                left[i]=left[i-1];
+            }    
+        }   
+    }
+    for(i=n-1;i>=0;i--)
+    {
+        if(i==n-1)
+        {
+            right[i]=ar[i];
+        }
+        else
+        {
+            if(right[i+1]<ar[i])
+            {
+                right[i]=ar[i];
+            }
+            else
+            {
+                right[i]=right[i+1];
+            }    
+        }
+    }
+    for(i=0;i<n;i++)
+    {
+        val=(left[i]<=right[i]?left[i]:right[i]);
+        if(val>ar[i])
+        {
+            sum=sum+(val-ar[i]);
+        }
+    }
+    cout<<"the value is "<<sum<<endl;
+    return0;
+}
+
+Stack using queue
+#include<bits/stdc++.h>
+using namespace std;
+int main()
+{
+    queue<int> q1,q2;
+    int i;
+    int ar[]={1,2,3,4,5};
+    int n=sizeof(ar)/sizeof(int);
+    for(i=0;i<n;i++)
+    {
+        q2.push(ar[i]);
+        if(!q1.empty())
+        {
+            while(!q1.empty())
+            {
+                q2.push(q1.front());
+                q1.pop();
+            }
+        }
+        q1.swap(q2);
+    }
+    while(!q1.empty())
+    {
+        cout<<q1.front()<<endl;
+        q1.pop();
+    }
+    return 0;
+}
+
+
+Celebrity problem
+#include<bits/stdc++.h>
+using namespace std;
+int main()
+{
+    
+    bool c[4][4]={{0, 0, 1, 0},
+                    {0, 0, 1, 0},
+                    {0, 0, 0, 0},
+                    {0, 0, 1, 0}};
+    stack<int> st;
+    for(int i=0;i<4;i++)
+    {
+        st.push(i);
+        while(st.size()>1)
+        {
+            int a=st.top();
+            st.pop();
+            int b=st.top();
+            st.pop();
+            if(c[b][a]==1 && c[a][b]==0)
+            {
+                st.push(a);
+            }
+            if(c[a][b]==1 && c[b][a]==0)
+            {
+                st.push(b);
+            }
+        }
+    }
+    cout<<st.top();
+    return 0;
+    
+}
+
+Delete mid element
+#include<bits/stdc++.h>
+using namespace std;
+int main()
+{
+    int i,n;
+    stack<int> st,temp;
+    st.push(1);
+    st.push(2);
+    st.push(3);
+    st.push(4);
+    st.push(5);
+    st.push(6);
+    st.push(7);
+    n=st.size();
+    for(i=0;i<(n/2);i++)
+    {
+        temp.push(st.top());
+        st.pop();
+    }
+   // cout<<st.top();
+    st.pop();
+    while(!temp.empty())
+    {
+        st.push(temp.top());
+        temp.pop();
+    }
+    for(i=0;i<n-1;i++)
+    {
+        cout<<st.top()<<endl;
+        st.pop();
+    }
+    return 0;
+}
+
+Design stack that supports getMin inO(1)
+#include<bits/stdc++.h>
+using namespace std;
+
+class minelement
+{
+    stack<int> st;
+    int minele;
+    public:
+    void push(int x)
+    {
+        if(st.empty())
+        {
+            minele=x;
+            st.push(x);
+            
+        }
+        else if(x < minele)
+        {
+            st.push(2*x-minele);
+            minele=x;
+        }
+        else
+        {
+            st.push(x);
+        }
+        cout<<"number inserted "<<x<<endl;
+    }
+
+    void pop()
+    {
+        if(st.empty())
+        {
+            cout<<"stack underflow"<<endl;
+            return;
+        }
+        int t=st.top();
+        st.pop();
+        if(t < minele)
+        {
+           // cout<<"t is "<<t<<" and minele is "<<minele<<endl;
+            cout<<"popped element is "<<minele<<endl;
+            minele=2*minele-t;
+        }
+        else
+        cout<<"popped element is "<<t<<endl;
+    }
+    void minvalue()
+    {
+        cout<<"minimum value is "<<minele<<endl;
+    }
+};
+int main()
+{
+    minelement s;
+    s.push(3);
+    s.push(5);
+    s.minvalue();
+    s.push(2);
+    s.push(1);
+    s.minvalue();
+    s.pop();
+    s.minvalue();
+    s.pop();
+    return 0;
+}
+
+Implement 2 stack in array
+#include<bits/stdc++.h>
+using namespace std;
+class twostack
+{
+    int *ar;
+    int top1,top2,n;
+    public:
+    twostack(int n)
+    {
+        ar=new int[n];
+        top1=0;
+        top2=n-1;
+    }
+    void push1(int x)
+    {
+        if(top1<=(n/2))
+        {
+            ar[top1]=x;
+        }
+        top1++;
+    }
+     void push2(int x)
+    {
+        if(top2<n)
+        {
+            ar[top2]=x;
+        }
+        top1--;
+    }
+
+    int pop1()
+    {
+        if(top1==0)
+        {
+            cout<<"Stack underflow"<<endl;
+        }
+        else
+        {
+            return ar[top1];
+            top1--;
+        }
+    }
+    int pop2()
+    {
+        if(top2==n)
+        {
+            cout<<"Stack underflow"<<endl;
+        }
+        else
+        {
+            return ar[top2];
+            top2++;
+        }
+    }
+};
+int main()
+{
+    twostack ts(5);
+    ts.push1(5);
+    ts.push2(10);
+    ts.push2(15);
+    ts.push1(11);
+    ts.push2(7);
+    cout << "Popped element from stack1 is "
+         << " : " << ts.pop1()
+         << endl;
+    ts.push2(40);
+    cout << "\nPopped element from stack2 is "
+         << ": " << ts.pop2()
+         << endl;
+    return 0;
+
+}
+
+Merge overlapping intervals
+#include<bits/stdc++.h>
+using namespace std;
+struct interval
+{
+    int start,end;
+};
+bool sortinterval(interval i1, interval i2)
+{
+    return (i1.start<i2.start);
+}
+int main()
+{
+    interval ar[]={{1,3},{2,4},{6,8},{9,10}};
+    int n,i;
+    n=sizeof(ar)/sizeof(int);
+    n=n/2;
+   //cout<<n;
+    stack<interval> st;
+    sort(ar,ar+n,sortinterval);
+    st.push(ar[0]);
+    for(i=1;i<n;i++)
+    {
+       // cout<<i<<endl;
+        interval k=st.top();
+        if(ar[i].start>k.end)
+        {
+            st.push(ar[i]);
+           // cout<<k.start<<"  "<<k.end<<endl;
+        }
+        else if(k.end>ar[i].start)
+        {
+            k.end=ar[i].end;
+            st.pop();
+            st.push(k);
+         //   cout<<k.start<<"  "<<k.end<<endl;
+        }
+    }
+    while(!st.empty())
+    {
+        interval h=st.top();
+        cout<<h.start<<"  "<<h.end<<endl;
+        st.pop();
+    }
+
+    return 0;
+}
+
+Reverse stack
+/*Time Complexity : O(N)
+Where n is the total number of elements.
+
+Space Complexity: O(N)
+As we have to create a Queue
+ of N elements to reverse the original stack.*/
+
+#include<bits/stdc++.h>
+using namespace std;
+int main()
+{
+    int i,n;
+    stack<int> st;
+    queue<int> q;
+    st.push(1);
+    st.push(2);
+    st.push(3);
+    st.push(4);
+    st.push(5);
+    st.push(6);
+    st.push(7);
+    n=st.size();
+    while(!st.empty())
+    {
+        q.push(st.top());
+        st.pop();
+    }
+    while(!q.empty())
+    {
+        st.push(q.front());
+        q.pop();
+    }
+    for(i=0;i<n;i++)
+    {
+        cout<<st.top()<<endl;
+        st.pop();
+    }
+    return 0;
+}
+
+Stack permutation
+#include<bits/stdc++.h>
+using namespace std;
+int main()
+{
+    int i,n,k=0;
+    stack<int> s1,s2;
+    int ar1[]={1,2,3};
+    int ar2[]={3,1,2};
+    //arr1[] = [ 1, 2, 3 ] , arr2[] = [ 3, 1, 2 ]
+    n=sizeof(ar1)/sizeof(int);
+    for(i=0;i<n;i++)
+    {
+        //if(s1.empty() && i!=n)
+        //{
+           // cout<<i<<endl;
+            s1.push(ar1[i]);
+        
+        //}
+        if(!s1.empty() && s1.top()==ar2[k] )
+        {
+            while(!s1.empty() && s1.top()==ar2[k] )
+            {
+               // cout<<i<<i<<endl;
+                s2.push(s1.top());
+                s1.pop();
+                k++;
+            }
+           // cout<<k<<endl;
+        }
+    }
+    if(s1.empty())
+    {
+        cout<<"stack permutation"<<endl;
+    }
+    else
+    {
+        cout<<"not stack permutation"<<endl;
+    }
+    return 0;
+}
+
+Stock span
+#include<bits/stdc++.h>
+using namespace std;
+int main()
+{
+    stack<int> st,index;
+    int n,i;
+    cout<<"enter no. of inputs"<<endl;
+    cin>>n;
+    int out[n],ar[n];
+    //memset(out,n,0);
+    for (i = 0; i < n; i++)
+    {
+        cin>>ar[i];
+    }
+    
+    for(i=0;i<n;i++)
+    {
+        if(st.empty())
+        {
+            st.push(ar[i]);
+            out[i]=1;
+            index.push(i);
+            cout<<i<<" "<<out[i]<<endl;
+        }
+        else if(!st.empty() && st.top()>ar[i])
+        {
+            out[i]=i-index.top();
+            st.push(ar[i]);
+            index.push(i);
+            cout<<i<<" "<<out[i]<<endl;
+        }
+        else if(!st.empty() && st.top()<=ar[i])
+        {
+            while(!st.empty() && st.top()<=ar[i])
+            {
+                st.pop();
+                index.pop();
+            }
+            if(st.empty())
+            {
+                out[i]=i+1;
+            }
+            else
+            {
+                out[i]=i-index.top();
+            }
+            
+            st.push(ar[i]);
+            index.push(i);
+            cout<<i<<" "<<out[i]<<endl;
+        }
+        //cout<<"pos is "<<pos<<endl;
+    }
+    for ( i = 0; i < n; i++)
+    {
+        cout<<out[i]<<'\t';
+    }
+    return 0;
+    
+}
+
+
+
+
+
+921. Minimum Add to Make Parentheses Valid
+
+class Solution {
+public:
+    int minAddToMakeValid(string s) {
+        stack<char> st;
+        for(char c:s)
+        {
+            if(c=='(')
+            {
+                st.push(c);
+            }
+            else if(c==')' && !st.empty() && st.top()=='(')
+            {
+                st.pop();
+            }
+            else
+            {
+                st.push(c);
+            }
+        }
+        return st.size();
+    }
+};
