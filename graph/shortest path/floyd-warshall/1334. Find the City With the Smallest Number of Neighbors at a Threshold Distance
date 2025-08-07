@@ -1,0 +1,51 @@
+1334. Find the City With the Smallest Number of Neighbors at a Threshold Distance
+https://leetcode.com/problems/find-the-city-with-the-smallest-number-of-neighbors-at-a-threshold-distance/solutions/7054147/floyd-warshall-c-by-shubham_sk70-s819/
+class Solution {
+public:
+    int findTheCity(int n, vector<vector<int>>& edges, int distanceThreshold) 
+    {
+        vector<vector<int>> adj(n,vector<int>(n,1e9));
+        for (int i = 0; i < n; ++i) 
+        {
+            adj[i][i] = 0;
+        }
+        for(auto it:edges)
+        {
+            adj[it[0]][it[1]]=it[2];
+            adj[it[1]][it[0]]=it[2];
+            
+        }
+        for(int via=0;via<n;via++)
+        {
+            for(int i=0;i<n;i++)
+            {
+                for(int j=0;j<n;j++)
+                {
+                    adj[i][j]=min(adj[i][j],adj[i][via]+adj[via][j]);
+                }
+            }
+        }
+        vector<int> ans(n,0);
+        for(int i=0;i<n;i++)
+        {
+            for(int j=0;j<n;j++)
+            {
+                if(adj[i][j]!=1e9 && adj[i][j]<=distanceThreshold)
+                {
+                    ans[i]++;
+                }
+            }
+        }
+        int result;
+        int mini=INT_MAX;
+        for(int i=0;i<n;i++)
+        {
+            if(ans[i]<=mini)
+            {
+                result=i;
+                mini=ans[i];
+            }
+        }
+        return result;
+    }
+};
