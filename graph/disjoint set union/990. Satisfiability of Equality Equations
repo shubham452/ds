@@ -1,0 +1,75 @@
+990. Satisfiability of Equality Equations
+https://leetcode.com/problems/satisfiability-of-equality-equations/
+
+class DSU{
+    public:
+    vector<int> parent,size;
+    DSU(int n)
+    {
+        parent.resize(n+1);
+        size.resize(n+1,1);
+        for(int i=0;i<n;i++)
+        {
+            parent[i]=i;
+        }
+    }
+    int findParent(int node)
+    {
+        if(parent[node]!=node)
+        {
+            parent[node]=findParent(parent[node]);
+        }
+        return parent[node];
+    }
+    void unionBySize(int u, int v)
+    {
+       int pu=findParent(u);
+       int pv=findParent(v);
+
+       if(pu==pv)
+       {
+            return;
+       }
+       if(size[pu]<size[pv])
+       {
+            parent[pu]= pv;
+            size[pv]+=size[pu];
+            
+       }
+       else
+       {
+            parent[pv]= pu;
+            size[pu]+=size[pv];
+       }
+    }
+
+
+};
+class Solution {
+public:
+    
+    bool equationsPossible(vector<string>& equations) 
+    {
+        int n=equations.size();
+        DSU dsu(26);
+
+        for(auto x:equations)
+        {
+            if(x[1]=='=')
+            {
+                dsu.unionBySize(x[0]-'a',x[3]-'a');
+            }
+        }  
+        for(auto x:equations)
+        {
+            if(x[1]=='!')
+            {
+                if(dsu.findParent(x[0]-'a')== dsu.findParent(x[3]-'a'))
+                {
+                    return false;
+                }
+            }
+        } 
+        return true; 
+    }
+};
