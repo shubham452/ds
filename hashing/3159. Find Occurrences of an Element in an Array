@@ -1,0 +1,34 @@
+3159. Find Occurrences of an Element in an Array
+
+https://leetcode.com/problems/find-occurrences-of-an-element-in-an-array/solutions/7248576/hashmap-by-shubham_sk70-spnq/
+
+class Solution {
+public:
+    vector<int> occurrencesOfElement(vector<int>& nums, vector<int>& queries, int x)
+    {
+        unordered_map<int,int> mp;
+        int i;
+        int count=0;
+        for(i=0;i<nums.size();i++)
+        {
+            if(nums[i]==x)
+            {
+                count++;
+                mp.insert({count,i});
+            }
+        }
+        vector<int> ans;
+        for(i=0;i<queries.size();i++)
+        {
+            if(mp.find(queries[i])==mp.end())
+            {
+                ans.push_back(-1);
+            }
+            else
+            {
+                ans.push_back(mp[queries[i]]);
+            }
+        }
+        return ans;
+    }
+};
