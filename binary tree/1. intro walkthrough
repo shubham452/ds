@@ -1,0 +1,326 @@
+
+---
+
+## 🧠 PART 1 — How Experts *Think* When They See a Binary Tree Question
+
+When I see a binary tree problem, **I do NOT think about code first**.
+
+I ask **only 6 questions**:
+
+1. **What does the problem want?**
+
+   * Value? (sum, max, height)
+   * Path?
+   * Structure change?
+   * Relationship between nodes?
+
+2. **Is the answer dependent on children?**
+
+   * If yes → **Postorder**
+   * If no → **Preorder / BFS**
+
+3. **Is the tree static or changing?**
+
+   * Static → traversal
+   * Changing → recursive return values
+
+4. **Do I need info from parent → child?**
+
+   * Yes → pass parameters down
+   * No → compute from children up
+
+5. **Single node answer or global answer?**
+
+   * Single → return value
+   * Global → update reference / class variable
+
+6. **Constraints hint**
+
+   * Depth ≤ 1000 → recursion OK
+   * Very large → BFS / iterative
+
+That’s it. Everything fits into this.
+
+---
+
+## 🌳 PART 2 — Core Binary Tree Types (99% of Problems)
+
+### 1️⃣ Traversal-Based Problems
+
+> “Visit nodes in some order”
+
+![Image](https://media.geeksforgeeks.org/wp-content/uploads/20251001114608100310/preorder_traversal_of_binary_tree_7.webp)
+
+![Image](https://storage.googleapis.com/algodailyrandomassets/curriculum/trees/bt-inorder-traversal-in.png)
+
+![Image](https://media.geeksforgeeks.org/wp-content/uploads/20240506162855/Postorder-Traversal-of-Binary-Tree-768.webp)
+
+![Image](https://favtutor.com/resources/images/uploads/Fig%202.jpg)
+
+**Examples**
+
+* Print tree
+* Inorder traversal
+* Right side view
+* Level order
+
+**Identification**
+
+* “Visit”
+* “Print”
+* “Return list”
+
+**Template**
+
+```cpp
+void dfs(TreeNode* root) {
+    if(!root) return;
+    dfs(root->left);
+    dfs(root->right);
+}
+```
+
+---
+
+### 2️⃣ Height / Depth / Size Problems
+
+> “How tall / how many / how deep”
+
+![Image](https://favtutor.com/resources/images/uploads/mceu_127631729181620741251716.jpg)
+
+![Image](https://cdn.emre.me/2019-07-26-binary-tree.png)
+
+![Image](https://afteracademy.com/images/diameter-of-binary-tree-recursive-example2-095e715d12df1d41.png)
+
+**Examples**
+
+* Height of tree
+* Diameter
+* Balanced tree
+
+**Pattern**
+✔ Postorder
+✔ Return int
+✔ Use `max(left, right)`
+
+**Template**
+
+```cpp
+int height(TreeNode* root) {
+    if(!root) return 0;
+    return 1 + max(height(root->left), height(root->right));
+}
+```
+
+---
+
+### 3️⃣ Path-Based Problems (Most Tricky)
+
+> “Path”, “sum”, “max”, “anywhere”, “leaf”
+
+![Image](https://afteracademy.com/images/path-sum-in-binary-tree-fb1857ace44dccc1.png)
+
+![Image](https://media.geeksforgeeks.org/wp-content/cdn-uploads/tree.png)
+
+**Subtypes**
+
+| Type        | Example      |
+| ----------- | ------------ |
+| Root → Leaf | Path Sum     |
+| Any → Any   | Max Path Sum |
+| Count paths | Path Sum III |
+
+**Golden Rule**
+
+> “Path cannot fork when returning”
+
+**Template**
+
+```cpp
+int dfs(TreeNode* root) {
+    if(!root) return 0;
+    int left = max(0, dfs(root->left));
+    int right = max(0, dfs(root->right));
+    ans = max(ans, root->val + left + right);
+    return root->val + max(left, right);
+}
+```
+
+---
+
+### 4️⃣ Structural / Validation Problems
+
+> “Is valid”, “is same”, “is mirror”
+
+![Image](https://favtutor.com/resources/images/uploads/mceu_6188365811690781642948.png)
+
+![Image](https://codepumpkin.com/wp-content/uploads/2018/08/Tree_vs_Binary_Tree.jpg)
+
+![Image](https://cdn-images-1.medium.com/max/720/1%2AVDjeWgeN5ajFNHH80_Xbeg.png)
+
+**Examples**
+
+* Same Tree
+* Symmetric Tree
+* Validate BST
+
+**Pattern**
+✔ Compare left vs right
+✔ Multiple recursive calls
+
+**Template**
+
+```cpp
+bool isSame(TreeNode* a, TreeNode* b) {
+    if(!a && !b) return true;
+    if(!a || !b) return false;
+    return a->val == b->val &&
+           isSame(a->left, b->left) &&
+           isSame(a->right, b->right);
+}
+```
+
+---
+
+### 5️⃣ Tree Construction Problems
+
+> “Build tree from traversal”
+
+![Image](https://wat-images.s3.ap-south-1.amazonaws.com/images/ps/preorder-inorder.svg)
+
+![Image](https://tutorialhorizon.com/static/media/algorithms/2014/12/Construct-tree-from-Inorder-and-postorder-traversal-1.png)
+
+**Clue Words**
+
+* “Build”
+* “Construct”
+* Traversal arrays
+
+**Pattern**
+✔ Preorder → root first
+✔ Inorder → split left/right
+
+---
+
+### 6️⃣ Binary Search Tree (BST) Specific
+
+> “Sorted”, “range”, “successor”
+
+![Image](https://courses.grainger.illinois.edu/cs225/sp2019/assets/notes/bst/bsttreetraversal.png)
+
+![Image](https://tutorialhorizon.com/static/media/algorithms/2014/12/Inorder-Predecessor-and-Successor-in-Binary-Search-Tree.jpg)
+
+**Special Rules**
+
+* Inorder is sorted
+* Left < root < right
+
+**Examples**
+
+* Kth smallest
+* LCA in BST
+* Validate BST
+
+---
+
+## 🧭 PART 3 — Decision Tree (Use This Every Time)
+
+```
+Does the answer depend on children?
+        ↓
+      YES → Postorder
+      NO  → Preorder / BFS
+
+Is it level-based?
+      ↓
+     YES → Queue (BFS)
+
+Is path involved?
+      ↓
+     YES → Return single path, update global
+
+Is structure comparison?
+      ↓
+     YES → Two recursive calls
+```
+
+---
+
+## 🧩 PART 4 — Common Variations & Traps
+
+| Trap                      | Fix                  |
+| ------------------------- | -------------------- |
+| Using preorder for height | Height = postorder   |
+| Returning forked path     | Paths must be linear |
+| Forgetting base case      | Always handle null   |
+| Recomputing height        | Use bottom-up        |
+
+---
+
+## 🏗️ PART 5 — Universal Binary Tree Skeleton (🔥 Memorize This)
+
+```cpp
+int dfs(TreeNode* root) {
+    if(!root) return BASE;
+
+    int left = dfs(root->left);
+    int right = dfs(root->right);
+
+    // process logic here
+
+    return SOMETHING;
+}
+```
+
+If you master this skeleton → **90% tree problems solved**
+
+---
+
+## 🧠 PART 6 — How YOU Become Really Good (Action Plan)
+
+### Week 1: Foundation
+
+* Height
+* Max depth
+* Same tree
+* Inorder traversal
+
+### Week 2: Core Patterns
+
+* Diameter
+* Balanced tree
+* Path sum
+* LCA
+
+### Week 3: Advanced
+
+* Max path sum
+* Path sum III
+* Serialize/Deserialize
+* Build tree
+
+### Daily Rule
+
+❌ Don’t code immediately
+✅ Dry run recursion on paper
+✅ Ask: “What does this function return?”
+
+---
+
+## 🏆 Final Truth (Very Important)
+
+You don’t get good at trees by **solving many**
+You get good by **understanding WHY recursion works**
+
+Once recursion clicks → **trees become easy**
+
+---
+
+If you want, next I can:
+
+* 🔥 Give you **15 company-wise tree questions**
+* 🧪 Solve **one hard tree problem step-by-step with thought process**
+* 🧠 Create a **binary tree cheat sheet PDF**
+* 🎯 Give **templates for every tree pattern**
+
+Just tell me what you want next 👊
