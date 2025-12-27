@@ -1,0 +1,354 @@
+Perfect. What you asked for is **exactly how top candidates reach tree-mastery**.
+Below is a **complete, structured answer** that you can **revise before interviews** and **reuse for any unseen tree problem**.
+
+I’ll deliver **all 5 items**, cleanly separated and deeply explained.
+
+---
+
+# 1️⃣ Map **EACH PROBLEM → EXACT PATTERN**
+
+Use this like a **lookup table in your head**.
+
+---
+
+## 🔹 TRAVERSAL (DFS – No logic)
+
+**Pattern:** `Pure Traversal`
+
+* Binary Tree Preorder Traversal
+* Binary Tree Inorder Traversal
+* Binary Tree Postorder Traversal
+* Preorder + Inorder + Postorder in Single Traversal
+* N-ary Tree Preorder Traversal
+* N-ary Tree Postorder Traversal
+
+➡ Just visit nodes. No dependency.
+
+---
+
+## 🔹 HEIGHT / DEPTH / SIZE (Postorder)
+
+**Pattern:** `Bottom-Up | Return int`
+
+* Maximum Depth of Binary Tree
+* Minimum Depth of Binary Tree
+* Diameter of Binary Tree
+* Balanced Binary Tree
+* Count Complete Tree Nodes
+* Maximum Depth of N-ary Tree
+
+➡ Parent needs children info → **postorder**
+
+---
+
+## 🔹 STRUCTURE MODIFICATION
+
+**Pattern:** `Return Node`
+
+* Remove Half Nodes
+* Mirror Tree
+* Merge Two Binary Trees
+* Children Sum in a Binary Tree
+
+➡ Modify structure, return updated root.
+
+---
+
+## 🔹 TWO TREE VALIDATION
+
+**Pattern:** `Dual DFS`
+
+* Same Tree
+* Two Mirror Trees
+* Subtree of Another Tree
+* Check if Subtree
+* Check if Tree is Isomorphic
+* Leaf-Similar Trees
+
+➡ Traverse **both trees together**
+
+---
+
+## 🔹 LEVEL ORDER / BFS
+
+**Pattern:** `Queue + Levels`
+
+* Binary Tree Level Order Traversal
+* Binary Tree Level Order Traversal II
+* Cousins in Binary Tree
+* Average of Levels in Binary Tree
+* Binary Tree Right Side View
+* Binary Tree Left Side View
+* Populate Next Right Pointers
+* Minimum Operations to Sort Tree by Level
+
+➡ If **level / distance / view** → BFS
+
+---
+
+## 🔹 POSITION / AXIS BASED
+
+**Pattern:** `BFS + Coordinates`
+
+* Top View of Binary Tree
+* Vertical Order Traversal of Binary Tree
+
+➡ Maintain `(row, col)` or `horizontal distance`
+
+---
+
+## 🔹 TREE CONSTRUCTION
+
+**Pattern:** `Root + Split`
+
+* Construct Binary Tree from Parent Array
+* Linked List to Binary Tree
+* Construct from Preorder + Inorder
+* Construct from Inorder + Postorder
+* Construct from String with Brackets
+
+➡ Identify root traversal → split inorder
+
+---
+
+## 🔹 PATH PROBLEMS (IMPORTANT)
+
+**Pattern:** `Path DFS`
+
+* Binary Tree Paths
+* Path Sum
+* Path Sum II
+* Path Sum III
+* Sum Root to Leaf Numbers
+* Binary Tree Maximum Path Sum
+* Lowest Common Ancestor
+
+➡ Path must be **linear when returning**
+
+---
+
+## 🔹 DISTANCE / TIME
+
+**Pattern:** `Tree → Graph`
+
+* All Nodes Distance K
+* Burning Tree
+
+➡ Build parent map → BFS
+
+---
+
+## 🔹 SERIALIZATION
+
+**Pattern:** `DFS + Null Markers`
+
+* Serialize and Deserialize Binary Tree
+
+---
+
+---
+
+# 2️⃣ 🧠 **VERTICAL ORDER TRAVERSAL – DEEP DIVE**
+
+This is one of the **hardest & most important** tree problems.
+
+---
+
+## 🧠 What the problem really asks
+
+> “Group nodes by **vertical columns**, ordered **top to bottom**, and **left to right** if needed.”
+
+So we need **POSITION information**, not just traversal.
+
+---
+
+## 🧭 Coordinate System
+
+```
+Root → (row = 0, col = 0)
+Left child → (row+1, col-1)
+Right child → (row+1, col+1)
+```
+
+---
+
+## 🏗 Data Structure
+
+```cpp
+map<int, map<int, multiset<int>>> nodes;
+```
+
+* `col` → vertical line
+* `row` → depth
+* `multiset` → sorted order when same position
+
+---
+
+## 🚀 Algorithm (BFS preferred forcing level order)
+
+```cpp
+queue<(node, row, col)>
+push(root, 0, 0)
+
+while queue:
+    pop
+    insert node.val into nodes[col][row]
+    push left (row+1, col-1)
+    push right (row+1, col+1)
+```
+
+---
+
+## 🧠 WHY BFS?
+
+DFS can mess up **row ordering**
+BFS guarantees **top → bottom**
+
+---
+
+## 🔥 Key Insight
+
+> Vertical order = **Traversal + Geometry**
+
+If you remember this → no fear.
+
+---
+
+# 3️⃣ 🎯 ONE **UNIVERSAL RECURSION TEMPLATE**
+
+This solves **90% of tree problems**.
+
+```cpp
+ReturnType dfs(TreeNode* root, Params...) {
+    if (!root) return BASE_CASE;
+
+    // 1️⃣ Collect from children
+    auto left = dfs(root->left, ...);
+    auto right = dfs(root->right, ...);
+
+    // 2️⃣ Process current node
+    PROCESS(root, left, right);
+
+    // 3️⃣ Return to parent
+    return VALUE_FOR_PARENT;
+}
+```
+
+---
+
+### How to customize
+
+| Question asks | Return          |
+| ------------- | --------------- |
+| Height        | int             |
+| Balanced      | pair<bool, int> |
+| Path          | int             |
+| Modify tree   | TreeNode*       |
+| Validate      | bool            |
+
+---
+
+# 4️⃣ 🏆 COMPANY-WISE TREE PATTERN FREQUENCY
+
+### 🔵 Amazon
+
+* BFS / Level Order
+* Distance K
+* Serialization
+* Construction
+
+### 🟢 Google
+
+* Vertical Order
+* LCA
+* Path Problems
+* Tree Geometry
+
+### 🟡 Microsoft
+
+* Tree Construction
+* Validation
+* Path Sum
+
+### 🔴 Meta (Facebook)
+
+* Max Path Sum
+* Balanced Tree
+* Depth / Diameter
+
+### 🟣 Uber
+
+* BFS + Parent Mapping
+* Burning Tree
+* Distance problems
+
+### 🟠 Atlassian
+
+* Structural recursion
+* Dual tree comparison
+
+➡ **Vertical + Path + BFS = must know**
+
+---
+
+# 5️⃣ 📄 ONE-PAGE **BINARY TREE CHEAT SHEET**
+
+Save this mentally 👇
+
+---
+
+### 🔑 GOLDEN RULES
+
+* Child dependent → **Postorder**
+* Level / distance → **BFS**
+* Path → **Linear return**
+* Two trees → **Dual DFS**
+* Modify structure → **Return node**
+* Construction → **Find root traversal**
+* Distance problems → **Tree → Graph**
+
+---
+
+### 🔁 PATH RULE
+
+> Update global with `left + right + root`
+> Return only `max(left, right) + root`
+
+---
+
+### 🧠 INTERVIEW QUESTION FILTER
+
+Ask these **in order**:
+
+1. DFS or BFS?
+2. Return value or void?
+3. Global answer needed?
+4. Parent info required?
+5. Tree or graph behavior?
+
+---
+
+## 🏁 FINAL TRUTH
+
+There are **NO new tree problems**.
+Only **new wordings** of the same patterns.
+
+If you master:
+
+* Traversal
+* Postorder returns
+* BFS levels
+* Path rules
+
+👉 **You will never fear a tree question again.**
+
+---
+
+If you want next:
+
+* 🔥 **Solve a HARD tree problem LIVE**
+* 🧪 **Practice plan (7 days)**
+* 🧠 **Interview-style explanation practice**
+* 📘 **Printable PDF cheat sheet**
+
+Just say the word 👊
