@@ -1,4 +1,23 @@
+Pattern 1: The Static Range Query (Read-Only)
+Goal: You have an array that doesn't change, and you need to answer many queries about range sums (or XORs) in .
 
+Main Template: Basic Prefix Sum
+Use Case: "Calculate sum of elements between indices L and R."
+Logic: Sum(L, R) = Prefix[R+1] - Prefix[L]
+Complexity: Build , Query .
+// Template
+vector<long long> prefix(n + 1, 0);
+for (int i = 0; i < n; i++) {
+    prefix[i + 1] = prefix[i] + nums[i];
+}
+// Query
+long long sum = prefix[right + 1] - prefix[left];
+Sub-Pattern 1.A: XOR Prefix Sum
+Use Case: "Find XOR of range [L, R]."
+Why it works: x ^ x = 0. Just like subtraction undoes addition, XOR undoes XOR.
+Logic: Xor(L, R) = Prefix[R+1] ^ Prefix[L] (Note: ^ instead of -).
+Problem: XOR Queries of a Subarray.
+--------------------------------------------------------------------------------------
 303. Range Sum Query - Immutable
 class NumArray {
 public:
