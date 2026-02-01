@@ -131,55 +131,5 @@ public:
         
     }
 };
------------------------------------------------------------------------------------
 
-617. Merge Two Binary Trees
-https://leetcode.com/problems/merge-two-binary-trees/description/
-
-class Solution {
-public:
-    TreeNode* mergeTrees(TreeNode* root1, TreeNode* root2) {
-        if(!root1)
-        {
-            return root2;
-        }
-        if(!root2)
-        {
-            return root1;
-        }
-        root1->val+=root2->val;
-        root1->left=mergeTrees(root1->left, root2->left);
-        root1->right=mergeTrees(root1->right, root2->right);
-        return root1;
-    }
-};
--------------------------------------------------------------------------------------
-100. Same Tree
-https://leetcode.com/problems/same-tree/description/
-class Solution {
-public:
-    void dfs(TreeNode* p, TreeNode* q, bool &ans)
-    {
-        if(p==NULL && q==NULL)
-        {
-            return;
-        }
-        if((p==NULL && q!=NULL) || (p!=NULL && q==NULL))
-        {
-            ans=false;
-            return;
-        }
-        if(p->val!=q->val)
-        {
-            ans=false;
-            return;
-        }
-        dfs(p->left,q->left,ans);
-        dfs(p->right,q->right,ans);
-    }
-    bool isSameTree(TreeNode* p, TreeNode* q) {
-        bool ans=true;
-        dfs(p,q,ans);
-        return ans;
-    }
-};
+--------------------------------------------------------------------------------
