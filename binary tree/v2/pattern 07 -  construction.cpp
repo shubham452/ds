@@ -86,3 +86,51 @@ public:
         return construct(preorder,0,inorder.size()-1);
     }
 };
+
+----------------------------------------------------------------------------------------------------
+
+  106. Construct Binary Tree from Inorder and Postorder Traversal
+  https://leetcode.com/problems/construct-binary-tree-from-inorder-and-postorder-traversal/description/
+
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    unordered_map<int,int> mp;
+    int postIndex;
+    TreeNode *construct(vector<int> &postorder, int start, int end)
+    {
+        if(start>end)
+        {
+            return NULL;
+        }
+        //for each time this function is called we only add 1 value that we know is the last one because in postorder it is L,R,Root.
+        int rootVal = postorder[postIndex--];
+        //creating root for last value that we know is root
+        TreeNode *root = new TreeNode(rootVal);
+        //we find mid to know how many are left and how many are right
+        int mid = mp[rootVal];
+        root->right = construct(postorder,mid+1,end);
+        root->left = construct(postorder,start,mid-1);
+        
+        return root;
+    }
+    TreeNode* buildTree(vector<int>& inorder, vector<int>& postorder) {
+         int n=inorder.size();
+         for(int i=0;i<n;i++)
+         {
+            mp[inorder[i]]=i;
+         }
+         postIndex = n-1;
+         return construct(postorder,0, n-1);
+    }
+};
