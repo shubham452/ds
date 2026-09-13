@@ -1,0 +1,16 @@
+construction:-
+1>
+conversion:-
+1>
+checking:-
+1> is bst
+2> check whether bst has dead end
+searching:-
+1> lowest common ancestor
+2>
+using limits:-
+1>is bst
+2>lowest common ancestor
+3>check whether bst contains dead end
+4>largest bst in binary tree
+5>bst from preorder

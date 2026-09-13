@@ -1,0 +1,1 @@
+(roots==NULL)->this checks if there is any node, if null means no node so pointer  already crossed leaf node.

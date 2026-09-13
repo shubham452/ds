@@ -1,0 +1,48 @@
+https://leetcode.com/problems/minimum-cost-to-convert-string-i/solutions/7060365/floyd-warshall-by-shubham_sk70-swo1/
+
+2976. Minimum Cost to Convert String I
+
+class Solution {
+public:
+// we will be using floyd warshall because we can go to char1 to char2 via any other char if it has low cost.
+    long long minimumCost(string source, string target, vector<char>& original, vector<char>& changed, vector<int>& cost) 
+    {
+        int n=original.size();
+        vector<vector<int>> adj(26,vector<int>(26,1e9));
+
+        int i,j,via;
+        for(i=0;i<26;i++)
+        {
+            adj[i][i]=0;
+        }
+        for(i=0;i<n;i++)
+        {
+            int x=original[i]-'a';
+            int y=changed[i]-'a';
+            adj[x][y]=min(cost[i],adj[x][y]);
+        }
+        for(via=0;via<26;via++)
+        {
+            for(i=0;i<26;i++)
+            {
+                for(j=0;j<26;j++)
+                {
+                    adj[i][j]=min(adj[i][j],adj[i][via]+adj[via][j]);
+                }
+            }
+        }
+        int p=source.size();
+        long long ans=0;
+        for(i=0;i<p;i++)
+        {
+            int a=source[i]-'a';
+            int b=target[i]-'a';
+            if(adj[a][b]==1e9)
+            {
+                return -1;
+            }
+            ans+=adj[a][b];
+        }
+        return ans;
+    }
+};

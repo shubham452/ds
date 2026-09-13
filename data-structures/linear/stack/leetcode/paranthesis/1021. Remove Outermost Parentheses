@@ -1,0 +1,37 @@
+1021. Remove Outermost Parentheses
+
+https://leetcode.com/problems/remove-outermost-parentheses/solutions/7237053/stack-paranthesis-by-shubham_sk70-1mcz/
+
+class Solution {
+public:
+    string removeOuterParentheses(string s) 
+    {
+        stack<char> st;
+        int n=s.size();
+        int depth=0;
+        string ans;
+        for(auto c:s)
+        {
+            if(c=='(')
+            {
+                
+                if(depth>0)
+                {
+                    ans.push_back('(');
+                    
+                }
+                depth++;
+            }
+            else if(c==')')
+            {
+                depth--;
+                if(depth>0)
+                {
+                    ans.push_back(')');
+                    
+                }
+            }
+        }    
+        return ans;
+    }
+};
